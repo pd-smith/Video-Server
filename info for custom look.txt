@@ -1,0 +1,5 @@
+TOP NAVIGATOR
+class <nav class ="(color code)">
+
+background image
+<body background="(path to pic)">
