@@ -1,0 +1,55 @@
+
+<html>
+	<title>Anime Port</title>
+	<head>
+		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		<script src= "https://cdn.socket.io/socket.io-1.3.2.js"></script>
+		<script src="/js/socket.io-stream.js"></script>
+		<script src = "http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/js/materialize.min.js"></script>
+		<script src="js/pageFragments.js"></script>
+		<script src="js/video.js"></script>
+		<script>
+
+			function generateUUID() {
+			    var d = new Date().getTime();
+			    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+			        var r = (d + Math.random()*16)%16 | 0;
+			        d = Math.floor(d/16);
+			        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+			    });
+			    return uuid;
+			};
+			var socket = io.connect('http://192.168.1.121:3000');
+			
+			var showList = [];
+			var listEpisodes = [];
+			var titleImage;
+			var showTitle;
+			var description;
+			var genres = [];
+
+			
+			ss(socket).on("episode_stream", function(stream, uuid){
+					$("#fragment").load("pages/showListTemplate.html");
+					if(UUID == uuid){
+						stream.pipe(this);
+					}
+			});
+			ss(socket).on("pop_list", function(list){
+				showList = list;
+			});
+			ss(socket).emit("pop_list_req");
+			var UUID = generateUUID();
+		</script>
+
+	</head>
+	<body>
+		<div id="slideMenu"></div>
+		<div class="container">
+			<div id="fragment"></div>
+		</div>
+		<div id="test"></div>
+	</body>
+</html>

@@ -1,0 +1,39 @@
+<nav>
+
+	<ul class="right hide-on-med-and-down">
+	    <li id="upload_but"><a>Upload</a></li>
+	    <li id="browse_but"><a>Browse</a></li>
+	    <li id="my_list_but"><a>My List</a></li>
+	</ul>
+	<ul id="slide-out" class="side-nav">
+	    <li id="upload_but_mob"><a>Upload</a></li>
+	    <li id="browse_but_mob"><a>Browse</a></li>
+	    <li id="my_list_but_mob"><a>My List</a></li>
+	</ul>
+	<a href="#" data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+</nav>
+
+<script>$(".button-collapse").sideNav();</script>
+
+<script>
+$(function(){
+	//desktop listeners
+	$("#upload_but").click(function(){
+		$("#fragment").load("pages/upload.html");
+	});
+
+	$("#browse_but").click(function(){
+		$("#fragment").load("pages/browse.html");
+	});
+	
+
+
+	//mobile listeners
+	$("#upload_but_mob").click(function(){
+		$("#fragment").load("pages/upload.html");
+	});
+
+	$("#browse_but_mob").click(function(){
+		$("#fragment").load("pages/browse.html");
+	});
+});

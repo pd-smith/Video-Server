@@ -1,0 +1,31 @@
+<script>
+$('#episode_list').click(function(e){
+		var desiredEpisode = e.target;
+		if(desiredEpisode.className == "collection-item"){
+			videoPath= showTitle +"/"+desiredEpisode.getAttribute('data-value')+ "/" + desiredEpisode.innerHTML;
+			ss(socket).emit("episode_retrieve",showTitle,desiredEpisode.getAttribute('data-value'),desiredEpisode.innerHTML + ".mp4",UUID);
+		}
+
+});
+
+function refreshList(){
+	var list = document.getElementById("episode_list");
+	var season;
+	for(var i in listEpisodes){
+		var splitz = listEpisodes[i].split('.');
+
+		if(splitz.length <2){
+			list.innerHTML += "<a href=\"#!\" class=\"collection-item active\">" + splitz[0] + "</a>";
+			season = splitz[0];
+		}else{
+			var meta = showTitle + "/" + season +"/" +splitz[0] + ".mp4";
+			list.innerHTML += "<a href=\"video?path=" + meta + "\" data-value=\""+ season +"\" class=\"collection-item\">" + splitz[0] + "</a>";	
+		}
+	}
+};
+refreshList();
+</script>
+<div class = "row">
+	<div id="episode_list" class="collection col s6 offset-s6">
+	</div>
+</div>

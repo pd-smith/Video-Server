@@ -1,0 +1,33 @@
+<script>
+	$('#show_list').click(function(e){
+		var desiredShow = e.target.innerHTML;
+		var list = [];
+		ss(socket).emit("show_retrieve",desiredShow,UUID);
+		var prog = document.getElementById('progress_list');
+		prog.innerHTML ="<div class=\"progress\"><div class=\"indeterminate\"></div></div>";
+		showTitle = desiredShow;
+
+	});
+	ss(socket).emit("pop_list_req");
+	var list = document.getElementById("show_list");
+
+	for(var i in showList){
+		list.innerHTML += "<a href=\"#!\" class=\"collection-item\">" + showList[i] + "</a>";
+	}
+
+	
+	ss(socket).on("show_retrieve_complete", function(list,uid){
+		if(UUID === uid){
+			listEpisodes = list;
+			var prog = document.getElementById('progress_list');
+			prog.innerHTML = "";
+			console.log(listEpisodes);
+			$("#fragment").load("pages/showListTemplate.html"); //race condition
+		}
+	});
+
+</script>
+<p id = "progress_list">
+	<div id="show_list" class="collection">
+	</div>
+</p>

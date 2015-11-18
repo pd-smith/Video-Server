@@ -1,0 +1,62 @@
+<script src="js/upload.js"></script>
+<script>
+	$(document).ready(function() {
+    	$('select').material_select();
+  	});
+  	$("#type_select").change(function(){
+  		document.getElementById("upload_button").className = "waves-effect waves-light btn";
+  		var selection = parseInt(document.getElementById("type_select").value);
+  		switch(selection){
+  			case 1:
+  				var extra = document.getElementById("extra_options");
+  				extra.innerHTML = "<div class=\"input-field col s1\"><input id=\"season_number\" type=\"text\" class=\"validate\"><label for=\"season_number\">Season Number</label></div><div class=\"input-field col s1\"><input id=\"episode_number\" type=\"text\" class=\"validate\"><label for=\"episode_number\">Episode Number</label></div>";
+  			break;
+  			case 2:
+  				var extra = document.getElementById("extra_options");
+  				extra.innerHTML = "<div class=\"input-field col s1\"><input id=\"ova_episode_number\" type=\"text\" class=\"validate\"><label for=\"ova_episode_number\">Episode Number</label></div>";
+  			break;
+  			case 3:
+  				var extra = document.getElementById("extra_options");
+  				extra.innerHTML = "<div class=\"input-field col s1\"><input id=\"movie_name\" type=\"text\" class=\"validate\"><label for=\"movie_name\">Movie Name</label></div>";
+  			break;
+  			default:
+  				console.log("Hit Default");
+  			break;
+  		}
+  	});
+</script>
+
+<p>
+<div class= "row">
+	<div class="input-field col s4">
+    	<input id="show_name" type="text" class="validate">
+    	<label for="show_name">Name of Show</label>
+	</div>
+	<div class="input-field col s8">
+    	<select id="type_select">
+      		<option value="" disabled selected>Choose Clip Type</option>
+      		<option value="1">Episode</option>
+      		<option value="2">OVA</option>
+      		<option value="3">Movie</option>
+    	</select>
+    	<label>Type of Clip</label>
+	</div>
+</div>
+</p>
+<p id = "extra_options"></p>
+<p>
+	<form action="#">
+		    <div class="file-field input-field">
+		      <div class="btn">
+		        <span>File</span>
+		        <input id="file" type="file">
+		      </div>
+		      <div class="file-path-wrapper">
+		        <input class="file-path validate" type="text">
+		      </div>
+		    </div>
+	</form>
+</p>
+
+<a id="upload_button" class="waves-effect waves-light btn disabled"><i class="material-icons left">cloud</i>Upload</a>
+<p id = "progress"></p>
