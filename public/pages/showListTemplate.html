@@ -20,18 +20,19 @@ $('#add_image').change(function(e){
 	  size += chunk.length;
 	  //give some sort of bar to indicate loading
 	  if(size >= file.size){
+	  	Materialize.toast('Image upload complete!', 4000);
 	  }else{
-	  	Materialize.toast('Image upload complete!', 4000)
+	  	
 	  }
 	});
 	blobStream.pipe(stream);
 });
+
 $('#add_desc').change(function(e){
-	$('#add_image').change(function(e){
 	var file = document.getElementById('desc_file').files[0]; // this line needs error checking
     var stream = ss.createStream();
     // upload a file to the server.
-    ss(socket).emit('upload_picture', stream, {size: file.size, name: showTitle});
+    ss(socket).emit('upload_desc', stream, {size: file.size, name: showTitle});
     var blobStream = ss.createBlobReadStream(file);
 	var size = 0;
 	var prog = document.getElementById('progress');
@@ -39,12 +40,12 @@ $('#add_desc').change(function(e){
 	  size += chunk.length;
 	  //give some sort of bar to indicate loading
 	  if(size >= file.size){
+	  	Materialize.toast('Description upload complete!', 4000);
 	  }else{
-	  	Materialize.toast('Desc upload complete!', 4000)
+	  	
 	  }
 	});
 	blobStream.pipe(stream);
-});
 });
 
 $(document).ready(function(){

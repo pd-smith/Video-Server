@@ -43,6 +43,7 @@ $(function() {
 			  if(size >= file.size){
 			  	ss(socket).emit('finished', 0);
 			  	prog.innerHTML = "";
+			  	Materialize.toast('Desc upload complete!', 4000);
 			  }else{
 			  	prog.innerHTML = "<div class=\"progress\"><div class=\"determinate\" style=\"width:" +Math.round((size/file.size)*100) + "%\"></div></div>";
 			  }
