@@ -7,6 +7,50 @@ $('#episode_list').click(function(e){
 		}
 
 });
+$('#add_image').change(function(e){
+	var file = document.getElementById('image_file').files[0]; // this line needs error checking
+    var stream = ss.createStream();
+    // upload a file to the server.
+    var extention = "." + file.name.split(".")[1];
+    ss(socket).emit('upload_picture', stream, {size: file.size, name: showTitle, exten:extention});
+    var blobStream = ss.createBlobReadStream(file);
+	var size = 0;
+	var prog = document.getElementById('progress');
+	blobStream.on('data', function(chunk) {
+	  size += chunk.length;
+	  //give some sort of bar to indicate loading
+	  if(size >= file.size){
+	  }else{
+	  	Materialize.toast('Image upload complete!', 4000)
+	  }
+	});
+	blobStream.pipe(stream);
+});
+$('#add_desc').change(function(e){
+	$('#add_image').change(function(e){
+	var file = document.getElementById('desc_file').files[0]; // this line needs error checking
+    var stream = ss.createStream();
+    // upload a file to the server.
+    ss(socket).emit('upload_picture', stream, {size: file.size, name: showTitle});
+    var blobStream = ss.createBlobReadStream(file);
+	var size = 0;
+	var prog = document.getElementById('progress');
+	blobStream.on('data', function(chunk) {
+	  size += chunk.length;
+	  //give some sort of bar to indicate loading
+	  if(size >= file.size){
+	  }else{
+	  	Materialize.toast('Desc upload complete!', 4000)
+	  }
+	});
+	blobStream.pipe(stream);
+});
+});
+
+$(document).ready(function(){
+  	$('.tooltipped').tooltip({delay: 50});
+
+});
 
 function refreshList(){
 	var list = document.getElementById("episode_list");
@@ -22,10 +66,34 @@ function refreshList(){
 			list.innerHTML += "<a href=\"video?path=" + meta + "\" data-value=\""+ season +"\" class=\"collection-item\">" + splitz[0] + "</a>";	
 		}
 	}
+	
+	
+	document.getElementById("show_art").src = titleImage;
+	document.getElementById("show_title").innerHTML = showTitle;
+	document.getElementById("show_desc").innerHTML = description;
 };
 refreshList();
 </script>
 <div class = "row">
-	<div id="episode_list" class="collection col s6 offset-s6">
+	<div id="meta_data" class="collection col s6">
+		<p><h2 id ="show_title"></h2></p>
+		<img class="responsive-img" id="show_art" src=""/>
+		<p> 
+			<blockquote id ="show_desc">
+			</blockquote>
+			<form action="#">
+			<div class="file-field">
+				<a id="add_image" class="btn-floating tooltipped waves-effect waves-light red" data-position="right" data-delay="50" data-tooltip="Upload Image"><i class="material-icons">add</i><input id="image_file" type="file"></a>
+			</div>
+		</form>
+			
+			<div class="file-field input-field">
+				<a id="add_desc"class="btn-floating tooltipped waves-effect waves-light red" data-position="right" data-delay="50" data-tooltip="Upload Description"><i class="material-icons">add</i><input id="desc_file" type="file"></a>
+			</div>
+		</p>
 	</div>
+	<ul class="collapsible" data-collapsible="accordion">
+	<div id="episode_list" class="collection col s6">
+		</div>
+	</ul>
 </div>

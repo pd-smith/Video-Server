@@ -2,6 +2,7 @@
 	$('#show_list').click(function(e){
 		var desiredShow = e.target.innerHTML;
 		var list = [];
+		ss(socket).emit("episode_info",desiredShow,UUID);
 		ss(socket).emit("show_retrieve",desiredShow,UUID);
 		var prog = document.getElementById('progress_list');
 		prog.innerHTML ="<div class=\"progress\"><div class=\"indeterminate\"></div></div>";
@@ -13,9 +14,22 @@
 
 	for(var i in showList){
 		list.innerHTML += "<a href=\"#!\" class=\"collection-item\">" + showList[i] + "</a>";
+	//	list.innerHTML += "<a href><img src=\"download.jpg\" alt=\"\" /></a>"
 	}
 
-	
+	ss(socket).on("episode_info",function(data,uid){
+		if(UUID === uid){
+			if(data.img_path == null){
+				titleImage = "/meta/no_image.png";
+			}else{
+				titleImage = data.img_path;
+			}
+			description = data.desc;
+			console.log(data.img_path);
+			console.log(data.desc);
+		}
+	});
+
 	ss(socket).on("show_retrieve_complete", function(list,uid){
 		if(UUID === uid){
 			listEpisodes = list;
@@ -25,6 +39,8 @@
 			$("#fragment").load("pages/showListTemplate.html"); //race condition
 		}
 	});
+
+
 
 </script>
 <p id = "progress_list">

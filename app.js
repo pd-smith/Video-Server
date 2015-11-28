@@ -7,6 +7,7 @@ var express = require('express'),
 	fs = require('fs');
 
 var VIDEO_PATH = __dirname + "/videos/";
+var META_PATH = __dirname + "/public/meta/";
 
 var contentTypes = {
     "default":"text/html",
@@ -23,7 +24,7 @@ app.get('/', function(req,res){
 });
 
 app.get('/video', function(req,res){
-	console.log(req.headers.range);
+	//console.log(req.headers.range);
 	var filePath = VIDEO_PATH + req.query.path + "";
 	var stat = fs.statSync(filePath);
   	var total = stat.size;
@@ -60,6 +61,7 @@ io.on('connection', function(socket) {
 		//console.log("File Upload. Size: " + (data.size/1000000) + " MB");
 		if(findShow(data.name) === false){
 			fs.mkdirSync(VIDEO_PATH + data.name);
+			fs.mkdirSync(META_PATH + data.name + "/meta");
 		}
 		if(findSeason(data.name,data.season) === false){
 			fs.mkdirSync(VIDEO_PATH + data.name + "/" + data.season);
@@ -72,6 +74,7 @@ io.on('connection', function(socket) {
 		//console.log("File Upload. Size: " + (data.size/1000000) + " MB");
 		if(findShow(data.name) === false){
 			fs.mkdirSync(VIDEO_PATH + data.name);
+			fs.mkdirSync(META_PATH + data.name);
 		}
 		if(findSeason(data.name,"OVA") === false){
 			fs.mkdirSync(VIDEO_PATH + data.name + "/OVA");
@@ -80,10 +83,19 @@ io.on('connection', function(socket) {
 
 	});
 
+	ss(socket).on('upload_picture' , function(stream,data){
+		stream.pipe(fs.createWriteStream(META_PATH + data.name + "/show_image" + data.exten));
+	});
+
+	ss(socket).on('upload_desc' , function(stream,data){
+		stream.pipe(fs.createWriteStream(META_PATH + data.name + "/desc.txt"));
+	});
+
 	ss(socket).on('upload_movie', function(stream,data){
 		//console.log("File Upload. Size: " + (data.size/1000000) + " MB");
 		if(findShow(data.name) === false){
 			fs.mkdirSync(VIDEO_PATH + data.name);
+			fs.mkdirSync(META_PATH + data.name);
 		}
 		if(findSeason(data.name,"Movies") === false){
 			fs.mkdirSync(VIDEO_PATH + data.name + "/Movies");
@@ -103,6 +115,13 @@ io.on('connection', function(socket) {
 
 	});
 
+	ss(socket).on("episode_info", function(title,uuid){
+		var image = getImage(title);
+		var desc = getDesc(title);
+		
+		ss(socket).emit("episode_info",{img_path:image,desc:desc}, uuid);
+	});
+
 	ss(socket).on("pop_list_req", function(){
 		ss(socket).emit("pop_list", listShows());
 	});
@@ -111,6 +130,41 @@ io.on('connection', function(socket) {
   		console.log("Upload Complete!");
   	});
 });
+
+var getImage = function(title){
+	var files = fs.readdirSync(META_PATH + title);
+	if(files == null){
+		return null;
+	}
+	for(var i in files){
+		var splitz = files[i].split('.');
+		if(splitz[0] == "show_image"){
+			return "meta/" + title + "/" + files[i];
+		}
+	}
+	return null;
+};
+
+var getDesc = function(title){
+	var files = fs.readdirSync(META_PATH + title);
+	if(files == null){
+		return null;
+	}
+	for(var i in files){
+		var splitz = files[i].split('.');
+		if(splitz[0] == "desc"){
+			/*var file = fs.open(files[i], 0);
+			var file_length = fs.length(file);
+			var content = fread(file, file_length);*/
+			var path = "public/meta/" + title + "/" + files[i];
+			var content = fs.readFileSync(path).toString();
+			
+			//add something for reading text files
+			return content;
+		}
+	}
+	return null;
+};
 
 var listDir = function(title){
 	//nested for loops to maintain order.
@@ -136,7 +190,7 @@ var listShows = function(){
 		shows.push(files[i]);
 	}
 	return shows;
-}
+};
 
 var findShow = function(title){
     var files = fs.readdirSync(VIDEO_PATH);

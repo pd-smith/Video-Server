@@ -7,8 +7,9 @@ function generateUUID() {
     });
     return uuid;
 };
-var socket = io.connect('http://192.168.1.121:3000');
-
+var server = 'localhost:3000';
+//var server = 'http://192.168.1.148:3000';
+var socket = io.connect(server);
 var showList = [];
 var listEpisodes = [];
 var titleImage;

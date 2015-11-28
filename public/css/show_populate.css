@@ -1,0 +1,7 @@
+.art_image {
+  display: block;
+  height: auto;
+  width: auto;
+  max-width: 320px;
+  max-height: 450px;
+}
