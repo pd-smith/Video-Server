@@ -10,20 +10,13 @@ import {streamVideo} from '../views/video_player/video_server.js';
 const VIDEO_PATH = global.SOURCE_PATH + "/videos/";
 const META_PATH = global.SOURCE_PATH + "/public/meta/";
 
-var contentTypes = {
-    "default":"text/html",
-    "video":"video/mp4",
-    "text":"text/json",
-    "html":"text/html"
-}
 export function main() {
     let app = express();
 
-    app.use(express.static("../../public"));
-
+    app.use(express.static(config.getProjectPath() + "/public"));
 
     app.get('/', function(req, res){
-        res.sendFile(config.getProjectPath() + '/index.html');
+        res.sendFile(config.getProjectPath() + '/src/views/index.html');
     });
 
     app.get('/video', function(req, res){
@@ -31,9 +24,7 @@ export function main() {
     });
 
     http.Server(app).listen(3000);
-    addSocketListeners();
     console.log("Listening on LocalHost:3000");
-
 }
 
 
