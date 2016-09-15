@@ -1,11 +1,30 @@
 # Video-Server
 
-Personal Video Server for uploading and streaming videos on local network.
+__Re attempt at my original video server idea.__
 
-Utilizes Socket.io-stream, Node.js, and Javascript.
+##Tech Stack:##
+*     Node.js
+*     ExpressJS
+*     es2015
 
-Plan is to run it off of Raspberry Pi and host webpage off of the Pi's IP.
+##END GOAL MINIMUM:##
+* locally hosted webapp that hosts 'multiple' movie formats
+* solid code coverage and testing (using nyc, sinon)
+* code linting
+
+##STRETCH GOALS:##
+* upload videos to server
+* different user accounts
+* users have a favorite, recently watched, and/or recommendation lists
+* React(?)
 
 
-NOTE: need to add "videos" directory in base directory or there will be errors. 
-      Problem will exist until I find time to make a fix.
+##TODO:##
+* [] Confirm system for organizing videos
+* [] Standardize Video Directory Naming Convention
+* [] Set up config file (or figure out if it's needed)
+* [] Build Simple Webpages To Test Directory API Population Funcationality
+* [] Add tests using sinon
+* [] Add test coverage check with nyc
+* [] Figure out Better Name for project and mirgrate to new repo
+* [] Beautify Pages with CSS
