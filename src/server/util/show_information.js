@@ -39,7 +39,7 @@ export function findShow(showTitle){
 }
 
 export function findSeason(showTitle,season){
-    var files = fs.readdirSync(config.getVideoPath() + title);
+    var files = fs.readdirSync(config.getVideoPath() + showTitle);
     for(var i in files){
         if(files[i] === season){
           console.log("Season found");
