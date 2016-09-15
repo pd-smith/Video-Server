@@ -1,6 +1,6 @@
 # Video-Server
 
-__Re attempt at my original video server idea.__
+__Revitalization at my original video server idea.__
 
 ##Tech Stack:##
 *     Node.js
