@@ -1,7 +1,7 @@
 {
-  "name": "uploadtest",
-  "version": "1.0.0",
-  "description": "",
+  "name": "Anime Server",
+  "version": "0.2.0",
+  "description": "Server Designed and Themed with Hosting Anime Shows",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,9 +13,7 @@
   "dependencies": {
     "express": "^4.13.3",
     "fs": "0.0.2",
-    "jquery": "^2.1.4",
-    "socket.io": "^1.3.7",
-    "socket.io-stream": "^0.9.0"
+    "jquery": "^2.1.4"
   },
   "devDependencies": {
     "babel-cli": "^6.14.0",
