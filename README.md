@@ -1,6 +1,6 @@
 # Video-Server
 
-__Revitalization at my original video server idea.__
+__Revitalization of my original video server.__
 
 ##Tech Stack:##
 *     Node.js
