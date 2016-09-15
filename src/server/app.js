@@ -4,9 +4,11 @@ import server from 'socket.io';
 import ss from 'socket.io-stream';
 import path from 'path';
 import fs from 'fs';
+import * as config from './util/config.js';
+import {streamVideo} from '../views/video_player/video_server.js';
 
-const VIDEO_PATH = __dirname + "/videos/";
-const META_PATH = __dirname + "/public/meta/";
+const VIDEO_PATH = global.SOURCE_PATH + "/videos/";
+const META_PATH = global.SOURCE_PATH + "/public/meta/";
 
 var contentTypes = {
     "default":"text/html",
@@ -20,48 +22,21 @@ export function main() {
     app.use(express.static("../../public"));
 
 
-    app.get('/', function(req,res){
-        console.log(global.SOURCE_PATH + '/index.html')
-        res.sendFile(global.SOURCE_PATH + '/index.html');
+    app.get('/', function(req, res){
+        res.sendFile(config.getProjectPath() + '/index.html');
     });
 
-    app.get('/video', function(req,res){
-        //console.log(req.headers.range);
-        var filePath = VIDEO_PATH + req.query.path + "";
-        var stat = fs.statSync(filePath);
-        var total = stat.size;
-        if (req.headers.range) {
-
-            var range = req.headers.range;
-            var parts = range.replace(/bytes=/, "").split("-");
-            var partialstart = parts[0];
-            var partialend = parts[1];
-
-            var start = parseInt(partialstart, 10);
-            start = +start || 0;
-            var end = partialend ? parseInt(partialend, 10) : total-1;
-            var chunksize = (end-start)+1;
-            console.log('RANGE: ' + start + ' - ' + end + ' = ' + chunksize);
-
-            var file = fs.createReadStream(filePath, {start: start, end: end});
-            res.writeHead(206, { 'Content-Range': 'bytes ' + start + '-' + end + '/' + total, 'Accept-Ranges': 'bytes', 'Content-Length': chunksize, 'Content-Type': 'video/mp4' });
-            file.pipe(res);
-
-          } else {
-
-            console.log('ALL: ' + total);
-            res.writeHead(200, { 'Content-Length': total, 'Content-Type': 'video/mp4' });
-            fs.createReadStream(filePath).pipe(res);
-        }
+    app.get('/video', function(req, res){
+        streamVideo(req.headers.range, req.param("vid"), res);
     });
-    
-    http.Server(app).listen(3000);    
+
+    http.Server(app).listen(3000);
     addSocketListeners();
     console.log("Listening on LocalHost:3000");
-    
+
 }
-	
-   
+
+
 
 function addSocketListeners() {
     let io = new server();
@@ -168,7 +143,7 @@ var getDesc = function(title){
 			var content = fread(file, file_length);*/
 			var path = "public/meta/" + title + "/" + files[i];
 			var content = fs.readFileSync(path).toString();
-			
+
 			//add something for reading text files
 			return content;
 		}
