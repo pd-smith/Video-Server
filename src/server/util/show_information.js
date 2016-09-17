@@ -6,10 +6,10 @@ export function listShowDirectory(showTitle){
   	var directoryContent = [];
   	var files = fs.readdirSync(videoPath);
     for(var i in files){
-  	   var stat = fs.statSync(videoPath + "/" + files[i]);
+  	   var stat = fs.statSync(videoPath + '/' + files[i]);
        if(stat.isDirectory()){
       	  directoryContent.push(files[i]);
-      	  var episodeCollection = fs.readdirSync(videoPath + "/" + files[i]);
+      	  var episodeCollection = fs.readdirSync(videoPath + '/' + files[i]);
       	  for(var j in episodeCollection){
       		    shows.push(episodeCollection[j]);
       	  }
@@ -42,7 +42,7 @@ export function findSeason(showTitle,season){
     var files = fs.readdirSync(config.getVideoPath() + showTitle);
     for(var i in files){
         if(files[i] === season){
-          console.log("Season found");
+          console.log('Season found');
           return true;
         }
     }

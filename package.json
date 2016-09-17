@@ -1,5 +1,5 @@
 {
-  "name": "Anime Server",
+  "name": "AnimeServer",
   "version": "0.2.0",
   "description": "Server Designed and Themed with Hosting Anime Shows",
   "main": "index.js",

@@ -1,6 +1,7 @@
 import fs from 'fs';
 import * as config from '../../server/util/config.js';
 
+// TODO: Sort through this and code until readable
 export function streamVideo(requestRange, videoPath, res) {
     var filePath = config.getVideoPath() + videoPath + "";
     var stat = fs.statSync(filePath);

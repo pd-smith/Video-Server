@@ -5,5 +5,28 @@ export function getProjectPath() {
 }
 
 export function getVideoPath() {
-    return getProjectPath() + "/videos/";
+    return getProjectPath() + '/videos/';
+}
+
+export function getEpisodePath() {
+    return getVideoPath + '/movies/';
+}
+
+export function getMoviePath() {
+    return getVideoPath + '/episodes/'
+}
+
+export function getViewsPath() {
+    return getProjectPath() + '/server/views/';
+}
+
+export function getParam() {
+    return 'id';
+}
+export function getSeasonFolderPrefix() {
+    return 'Season_';
+}
+
+export function getEpisodeFilePrefix() {
+    return 'Episode_';
 }
