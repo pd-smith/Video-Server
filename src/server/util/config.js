@@ -5,19 +5,19 @@ export function getProjectPath() {
 }
 
 export function getVideoPath() {
-    return getProjectPath() + '/videos/';
+    return getProjectPath() + '/videos';
 }
 
 export function getEpisodePath() {
-    return getVideoPath + '/movies/';
+    return getVideoPath() + '/episodes';
 }
 
 export function getMoviePath() {
-    return getVideoPath + '/episodes/'
+    return getVideoPath() + '/movies'
 }
 
 export function getViewsPath() {
-    return getProjectPath() + '/server/views/';
+    return getProjectPath() + '/server/views';
 }
 
 export function getParam() {

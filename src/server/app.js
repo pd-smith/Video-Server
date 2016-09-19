@@ -1,28 +1,24 @@
 import express from 'express';
 import http from 'http';
 import * as config from './util/config.js';
-import {streamVideo} from '../views/video_player/video_server.js';
+import site from './apps/site.js';
+import serverAPI from './apps/server_api.js';
 
 export function main() {
+    const port = 3000;
+    const host = 'localhost';
     let app = express();
 
-    app.use(express.static(config.getProjectPath() + '/public'));
+    app.use(express.static(config.getProjectPath() + '/lib'));
 
-    app.get('/', (req, res) => {
-        res.sendFile(config.getProjectPath() + '/src/views/index.html');
+    app.use('/', site());
+    app.use('/api', serverAPI());
+
+    return new Promise((resolve) => {
+        const server = http.createServer(app);
+        server.listen(port, host, () => {
+            resolve(server);
+        });
     });
 
-    app.get('/show/*', (req, res) => {
-        res.sendFile(config.getProjectPath() +
-            '/src/views/show_page/show_page_template.html');
-    });
-
-    app.get('/movie/*', (req, res) => {
-        streamVideo(req.headers.range, req.param(config.getParam()), res);
-    });
-
-
-
-    http.Server(app).listen(3000);
-    console.log('Listening on LocalHost:3000');
 }

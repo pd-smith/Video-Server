@@ -14,6 +14,10 @@ export function generateEpisodeFileName(episodeNumber) {
     throw new Error('Parameter inputed is not an integer.');
 }
 
-export function generateShowName(showName) {
+export function generateShowFileName(showName) {
     return showName.replace(' ', '-');
+}
+
+export function generateShowName(fileName) {
+    return showName.replace('-', ' ');
 }

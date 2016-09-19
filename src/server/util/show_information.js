@@ -1,21 +1,39 @@
 import * as config from './config.js';
+import * as naming from './naming_convention.js';
 import fs from 'fs';
 
-export function listShowDirectory(showTitle){
-    const videoPath = config.getVideoPath() + showTitle;
-  	var directoryContent = [];
-  	var files = fs.readdirSync(videoPath);
-    for(var i in files){
-  	   var stat = fs.statSync(videoPath + '/' + files[i]);
-       if(stat.isDirectory()){
-      	  directoryContent.push(files[i]);
-      	  var episodeCollection = fs.readdirSync(videoPath + '/' + files[i]);
-      	  for(var j in episodeCollection){
-      		    shows.push(episodeCollection[j]);
+const SHOW_NAME_ATTRIBUTE = 'show_name';
+const SHOW_LINK_ATTRIBUTE = 'show_links';
+const EPISODE_NAME_ATTRIBUTE = 'episode_name';
+const EPISODE_LINK_ATTRIBUTE = 'episode_link'
+
+
+export function listEpisodeInformation(showTitle){
+    const videoPath = `${config.getEpisodePath()}/${showTitle}`;
+    const files = fs.readdirSync(videoPath);
+    let hasMultipleSeasons = false;
+    let episodeInformation = '{';
+
+    for (var season in files) {
+  	   const seasonPathStat = fs.statSync(videoPath + '/' + files[season]);
+       if (seasonPathStat.isDirectory()) {
+
+          hasMultipleSeasons ? episodeInformation += ',': hasMultipleSeasons = true;
+          episodeInformation += `"${files[season]}":[`;
+          let hasMultipleEpisodes = false;
+          const seasonPath = fs.readdirSync(videoPath + '/' + files[season])
+      	  for (var episode in seasonPath) {
+              hasMultipleEpisodes ? episodeInformation += ',': hasMultipleEpisodes = true;
+              episodeInformation += `{
+                "${EPISODE_NAME_ATTRIBUTE}": "${seasonPath[episode]}",
+                "${EPISODE_LINK_ATTRIBUTE}": "${files[season]}/${seasonPath[episode]}"
+              }`;
       	  }
+          episodeInformation += ']'
        }
     }
-    return directoryContent;
+    episodeInformation += '}';
+    return episodeInformation;
 }
 
 export function listShows(){
