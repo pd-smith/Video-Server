@@ -5,21 +5,22 @@ export function constructShowDirectoryList(showName) {
     try {
         showList = showInfo.listEpisodeInformation(showName);
     } catch (err) {
-        return `{
-            "error": "Show not found"
-        }`;
+        return {
+            error: 'Show not found'
+        };
     }
 
-    const output = `{
-        "show_name": "${showName}",
-        "show_links": [
-            ${showList}
+    const output = {
+        'show_name': showName,
+        'show_links': [
+            showList
         ]
-    }`;
-    return JSON.parse(output);
+    };
+
+    return output;
 }
 
 export function constructShowList() {
-    const output = '{}';
-    return JSON.parse(output);
+    const output = {};
+    return output;
 }

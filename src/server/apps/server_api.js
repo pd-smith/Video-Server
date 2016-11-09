@@ -17,8 +17,8 @@ export default function() {
 
     app.get('/show/*', (req, res) => {
         const showName = getLastPathURL(req.path);
-        let showList;
-        (showName === '') ? constructShowList(): constructShowDirectoryList(showName);
+        let showList =
+          (showName === '') ? constructShowList(): constructShowDirectoryList(showName);
         res.send(showList);
     });
 

@@ -11,28 +11,23 @@ const EPISODE_LINK_ATTRIBUTE = 'episode_link'
 export function listEpisodeInformation(showTitle){
     const videoPath = `${config.getEpisodePath()}/${showTitle}`;
     const files = fs.readdirSync(videoPath);
-    let hasMultipleSeasons = false;
-    let episodeInformation = '{';
+    const episodeInformation = {};
 
-    for (var season in files) {
-  	   const seasonPathStat = fs.statSync(videoPath + '/' + files[season]);
+    files.forEach((season) => {
+  	   const seasonPathStat = fs.statSync(videoPath + '/' + season);
        if (seasonPathStat.isDirectory()) {
-
-          hasMultipleSeasons ? episodeInformation += ',': hasMultipleSeasons = true;
-          episodeInformation += `"${files[season]}":[`;
-          let hasMultipleEpisodes = false;
-          const seasonPath = fs.readdirSync(videoPath + '/' + files[season])
-      	  for (var episode in seasonPath) {
-              hasMultipleEpisodes ? episodeInformation += ',': hasMultipleEpisodes = true;
-              episodeInformation += `{
-                "${EPISODE_NAME_ATTRIBUTE}": "${seasonPath[episode]}",
-                "${EPISODE_LINK_ATTRIBUTE}": "${files[season]}/${seasonPath[episode]}"
-              }`;
-      	  }
-          episodeInformation += ']'
+          const seasonContents = fs.readdirSync(videoPath + '/' + season);
+          let episodeListForSeason = [];
+          seasonContents.forEach((episode) => {
+              episodeListForSeason.push({
+                  [EPISODE_NAME_ATTRIBUTE]: episode,
+                  [EPISODE_LINK_ATTRIBUTE]: `${videoPath}/${season}/${episode}`
+              });
+          });
+          episodeInformation[season] = episodeListForSeason;
        }
-    }
-    episodeInformation += '}';
+    });
+
     return episodeInformation;
 }
 
